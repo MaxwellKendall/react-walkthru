@@ -1,8 +1,14 @@
-# React + Vite
+# React Walk Thru
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This Repo uses:
 
-Currently, two official plugins are available:
+## [Vite](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+For cofiguring the bundle of JS, HTML, CSS annd so on.
+## [React Router](https://reactrouter.com/en/6.16.0/start/concepts)
+
+For client side routing, or, rendering react components based on the URL
+
+## [React Bootstrap](https://react-bootstrap.netlify.app/)
+
+For styling our react components.
