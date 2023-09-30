@@ -1,27 +1,25 @@
-import { Routes, Route, Outlet, Link } from "react-router-dom";
+import { useState } from "react";
+import { Routes, Route, Outlet, Link, Navigate } from "react-router-dom";
+
+const validUsers = ['max']
+
+const initialState = {
+  isSignedIn: false
+}
 
 export default function App() {
+  const [auth, setAuth] = useState(initialState);
   return (
     <div>
-      <h1>Basic Example</h1>
-
-      <p>
-        This example demonstrates some of the core features of React Router
-        including nested <code>&lt;Route&gt;</code>s,{" "}
-        <code>&lt;Outlet&gt;</code>s, <code>&lt;Link&gt;</code>s, and using a
-        "*" route (aka "splat route") to render a "not found" page when someone
-        visits an unrecognized URL.
-      </p>
-
       {/* Routes nest inside one another. Nested route paths build upon
             parent route paths, and nested route elements render inside
             parent route elements. See the note about <Outlet> below. */}
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
+          <Route element={<Home />} />
           <Route path="about" element={<About />} />
-          <Route path="dashboard" element={<Dashboard />} />
-
+          <Route path="dashboard" element={<Dashboard auth={auth} />} />
+          <Route path="signin" element={<Signin auth={auth} setAuth={setAuth} />} />
           {/* Using path="*"" means "match anything", so this route
                 acts like a catch-all for URLs that we don't have explicit
                 routes for. */}
@@ -31,6 +29,45 @@ export default function App() {
     </div>
   );
 }
+
+function Signin(props) {
+  const [username, updateUsername] = useState('')
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('submit')
+    if (validUsers.includes(username)) {
+      props.setAuth({ isSignedIn: true });
+    }
+  }
+
+  const handleUsername = (e) => {
+    e.persist();
+    updateUsername(e.target.value);
+  }
+
+  if (props.auth.isSignedIn) {
+    return <Navigate to="/dashboard" />
+  }
+
+  return (
+    <div>
+      <p>You must log in to view the page /dashboard</p>
+
+      <form onSubmit={handleSubmit}>
+        <label>
+          Username: <input name="username" type="text" value={username} onChange={handleUsername} />
+        </label>{" "}
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  );
+}
+
+Signin.propTypes = {
+  setAuth: 'function',
+  auth: { isSignedIn: 'boolean' }
+};
 
 function Layout() {
   return (
@@ -80,12 +117,19 @@ function About() {
   );
 }
 
-function Dashboard() {
-  return (
-    <div>
-      <h2>Dashboard</h2>
-    </div>
-  );
+function Dashboard(props) {
+  if (props.auth.isSignedIn) {
+    return (
+      <div>
+        <h2>Dashboard</h2>
+      </div>
+    );
+  }
+  return <Navigate to="/signin" />
+}
+
+Dashboard.propTypes = {
+  auth: { isSignedIn: 'boolean' }
 }
 
 function NoMatch() {
