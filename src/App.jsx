@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "react-bootstrap";
 import { Routes, Route, Outlet, Link, Navigate } from "react-router-dom";
 
 const validUsers = ['max']
@@ -16,7 +17,7 @@ export default function App() {
             parent route elements. See the note about <Outlet> below. */}
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route element={<Home />} />
+          <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="dashboard" element={<Dashboard auth={auth} />} />
           <Route path="signin" element={<Signin auth={auth} setAuth={setAuth} />} />
@@ -104,7 +105,7 @@ function Layout() {
 function Home() {
   return (
     <div>
-      <h2>Home</h2>
+      <Button variant="primary">Home</Button>
     </div>
   );
 }
@@ -112,7 +113,7 @@ function Home() {
 function About() {
   return (
     <div>
-      <h2>About</h2>
+      <Button variant="secondary">About</Button>
     </div>
   );
 }
@@ -121,7 +122,7 @@ function Dashboard(props) {
   if (props.auth.isSignedIn) {
     return (
       <div>
-        <h2>Dashboard</h2>
+        <Button variant="light">Dashboard</Button>
       </div>
     );
   }
